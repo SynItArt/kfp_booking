@@ -292,7 +292,7 @@
     <button class="submit-btn" onclick="submitBooking()">📅 예약 확정하기</button>
 
     <div class="notice" style="margin-top:12px;">
-      ℹ️ 예약 확정 시 <strong>신대식 본부장 (010-2088-5383)</strong>에게 SMS로 예약 내역이 전송됩니다.<br>
+      ℹ️ 예약 확정 시 <strong>신대식 본부장</strong>에게 자동으로 이메일 알림이 발송됩니다.<br>
       확정 후 Zoom 링크 또는 방문 안내를 별도 연락드리겠습니다.
     </div>
   </div>
@@ -429,7 +429,11 @@ function selectSlot(date, time, dayName) {
   document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function submitBooking() {
+// ═══ Google Apps Script 웹앱 URL ═══
+// ⚠️ 아래 URL을 배포한 Apps Script 웹앱 URL로 교체하세요
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx76FFJTMV-M1yVqSCkL2UfAgpAun9EKUS7XUA6QC0-wMWvVrlV8Z3I_w3RfNvzCmN9/exec';
+
+async function submitBooking() {
   const company = document.getElementById('companyName').value.trim();
   const person = document.getElementById('personName').value.trim();
   const phone = document.getElementById('phone').value.trim();
@@ -440,29 +444,65 @@ function submitBooking() {
     return;
   }
 
-  const typeLabel = meetingType === 'zoom' ? 'Zoom비대면' : '대면방문';
-  const smsBody = `[KFP Export 미팅예약]\n${typeLabel}\n일시: ${selectedSlot.date}(${selectedSlot.dayName}) ${selectedSlot.time}\n업체: ${company}\n담당: ${person}\n연락처: ${phone}\n품목: ${product || '미입력'}`;
+  const btn = document.querySelector('.submit-btn');
+  const originalText = btn.textContent;
+  btn.textContent = '⏳ 예약 접수 중...';
+  btn.style.opacity = '0.7';
+  btn.disabled = true;
 
-  // SMS 전송 (모바일에서 작동)
-  const smsUrl = `sms:010-2088-5383?body=${encodeURIComponent(smsBody)}`;
+  const bookingData = {
+    meetingType: meetingType,
+    date: selectedSlot.date,
+    time: selectedSlot.time,
+    dayName: selectedSlot.dayName,
+    company: company,
+    person: person,
+    phone: phone,
+    product: product
+  };
 
-  // 이메일 fallback (PC에서 작동)
-  const emailBody = smsBody.replace(/\n/g, '%0A');
-  const emailUrl = `mailto:profinitart@gmail.com?subject=[미팅예약] ${company} ${selectedSlot.date}&body=${emailBody}`;
-
-  // 모바일 감지
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-  if (isMobile) {
-    window.location.href = smsUrl;
-  } else {
-    window.location.href = emailUrl;
+  try {
+    if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+      // Apps Script 미설정 시 → 이메일 fallback
+      const typeLabel = meetingType === 'zoom' ? 'Zoom비대면' : '대면방문';
+      const body = `[KFP Export 미팅예약]%0A${typeLabel}%0A일시: ${selectedSlot.date}(${selectedSlot.dayName}) ${selectedSlot.time}%0A업체: ${company}%0A담당: ${person}%0A연락처: ${phone}%0A품목: ${product || '미입력'}`;
+      window.open(`mailto:profinitart@gmail.com?subject=[미팅예약] ${company} ${selectedSlot.date}&body=${body}`, '_blank');
+      showResult('success', '이메일 앱이 열립니다. 전송을 눌러주세요.');
+    } else {
+      // Apps Script 자동 알림 발송
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData)
+      });
+      showResult('success', null);
+    }
+  } catch (error) {
+    console.error('Booking error:', error);
+    // 에러 시에도 이메일 fallback
+    const typeLabel = meetingType === 'zoom' ? 'Zoom비대면' : '대면방문';
+    const body = `[KFP Export 미팅예약]%0A${typeLabel}%0A일시: ${selectedSlot.date}(${selectedSlot.dayName}) ${selectedSlot.time}%0A업체: ${company}%0A담당: ${person}%0A연락처: ${phone}%0A품목: ${product || '미입력'}`;
+    window.open(`mailto:profinitart@gmail.com?subject=[미팅예약] ${company} ${selectedSlot.date}&body=${body}`, '_blank');
+    showResult('fallback', null);
   }
 
-  // 확인 메시지
-  setTimeout(() => {
-    alert(`예약 요청이 접수되었습니다!\n\n${typeLabel}\n${selectedSlot.date}(${selectedSlot.dayName}) ${selectedSlot.time}\n\n신대식 본부장이 확인 후 연락드리겠습니다.`);
-  }, 500);
+  btn.textContent = originalText;
+  btn.style.opacity = '1';
+  btn.disabled = false;
+}
+
+function showResult(type, customMsg) {
+  const typeLabel = meetingType === 'zoom' ? '💻 Zoom 비대면' : '🤝 대면 방문';
+  const form = document.getElementById('bookingForm');
+  
+  let msg = '';
+  if (type === 'success') {
+    msg = customMsg || `✅ 예약이 접수되었습니다!\n\n${typeLabel}\n${selectedSlot.date}(${selectedSlot.dayName}) ${selectedSlot.time}\n\n신대식 본부장에게 알림이 전송되었습니다.\n확인 후 연락드리겠습니다.`;
+  } else {
+    msg = `📧 예약 정보가 이메일로 전송됩니다.\n\n${typeLabel}\n${selectedSlot.date}(${selectedSlot.dayName}) ${selectedSlot.time}\n\n이메일 전송을 완료해주세요.`;
+  }
+  alert(msg);
 }
 </script>
 
