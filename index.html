@@ -430,8 +430,8 @@ function selectSlot(date, time, dayName) {
 }
 
 // ═══ Google Apps Script 웹앱 URL ═══
-// ⚠️ 아래 URL을 배포한 Apps Script 웹앱 URL로 교체하세요
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx76FFJTMV-M1yVqSCkL2UfAgpAun9EKUS7XUA6QC0-wMWvVrlV8Z3I_w3RfNvzCmN9/exec';
+// ⚠️ 배포한 Apps Script URL로 교체하세요
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfj2ccnqzzOwR68nAXLaL-dsPePy0hTPiGhtkwb3YCh82nGsSU8uwipYOZWL_3_duMuw/exec';
 
 async function submitBooking() {
   const company = document.getElementById('companyName').value.trim();
@@ -445,10 +445,9 @@ async function submitBooking() {
   }
 
   const btn = document.querySelector('.submit-btn');
-  const originalText = btn.textContent;
   btn.textContent = '⏳ 예약 접수 중...';
-  btn.style.opacity = '0.7';
-  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  btn.style.pointerEvents = 'none';
 
   const bookingData = {
     meetingType: meetingType,
@@ -461,48 +460,54 @@ async function submitBooking() {
     product: product
   };
 
-  try {
-    if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
-      // Apps Script 미설정 시 → 이메일 fallback
-      const typeLabel = meetingType === 'zoom' ? 'Zoom비대면' : '대면방문';
-      const body = `[KFP Export 미팅예약]%0A${typeLabel}%0A일시: ${selectedSlot.date}(${selectedSlot.dayName}) ${selectedSlot.time}%0A업체: ${company}%0A담당: ${person}%0A연락처: ${phone}%0A품목: ${product || '미입력'}`;
-      window.open(`mailto:profinitart@gmail.com?subject=[미팅예약] ${company} ${selectedSlot.date}&body=${body}`, '_blank');
-      showResult('success', '이메일 앱이 열립니다. 전송을 눌러주세요.');
-    } else {
-      // Apps Script 자동 알림 발송
-      const response = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(bookingData)
-      });
-      showResult('success', null);
-    }
-  } catch (error) {
-    console.error('Booking error:', error);
-    // 에러 시에도 이메일 fallback
-    const typeLabel = meetingType === 'zoom' ? 'Zoom비대면' : '대면방문';
-    const body = `[KFP Export 미팅예약]%0A${typeLabel}%0A일시: ${selectedSlot.date}(${selectedSlot.dayName}) ${selectedSlot.time}%0A업체: ${company}%0A담당: ${person}%0A연락처: ${phone}%0A품목: ${product || '미입력'}`;
-    window.open(`mailto:profinitart@gmail.com?subject=[미팅예약] ${company} ${selectedSlot.date}&body=${body}`, '_blank');
-    showResult('fallback', null);
+  if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    // Apps Script 미설정 → 안내
+    btn.textContent = '📅 예약 확정하기';
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+    alert('시스템 설정 중입니다.\n010-2088-5383으로 직접 연락 부탁드립니다.');
+    return;
   }
 
-  btn.textContent = originalText;
-  btn.style.opacity = '1';
-  btn.disabled = false;
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(bookingData)
+    });
+    // no-cors 모드에서는 response를 읽을 수 없으므로 성공으로 간주
+    showSuccess(bookingData);
+  } catch (error) {
+    console.error('전송 오류:', error);
+    alert('전송 중 오류가 발생했습니다.\n010-2088-5383으로 직접 연락 부탁드립니다.');
+    btn.textContent = '📅 예약 확정하기';
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+  }
 }
 
-function showResult(type, customMsg) {
-  const typeLabel = meetingType === 'zoom' ? '💻 Zoom 비대면' : '🤝 대면 방문';
+function showSuccess(data) {
+  const typeLabel = data.meetingType === 'zoom' ? '💻 Zoom 비대면' : '🤝 대면 방문';
   const form = document.getElementById('bookingForm');
   
-  let msg = '';
-  if (type === 'success') {
-    msg = customMsg || `✅ 예약이 접수되었습니다!\n\n${typeLabel}\n${selectedSlot.date}(${selectedSlot.dayName}) ${selectedSlot.time}\n\n신대식 본부장에게 알림이 전송되었습니다.\n확인 후 연락드리겠습니다.`;
-  } else {
-    msg = `📧 예약 정보가 이메일로 전송됩니다.\n\n${typeLabel}\n${selectedSlot.date}(${selectedSlot.dayName}) ${selectedSlot.time}\n\n이메일 전송을 완료해주세요.`;
-  }
-  alert(msg);
+  form.innerHTML = `
+    <div style="text-align:center;padding:20px 0;">
+      <div style="font-size:48px;margin-bottom:12px;">✅</div>
+      <div style="font-size:18px;font-weight:700;color:#0A1628;margin-bottom:8px;">예약이 접수되었습니다!</div>
+      <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:16px;text-align:left;font-size:14px;color:#166534;margin:16px 0;">
+        <div style="margin-bottom:4px;"><strong>미팅 방식:</strong> ${typeLabel}</div>
+        <div style="margin-bottom:4px;"><strong>일시:</strong> ${data.date} (${data.dayName}) ${data.time}</div>
+        <div style="margin-bottom:4px;"><strong>업체:</strong> ${data.company}</div>
+        <div><strong>담당자:</strong> ${data.person}</div>
+      </div>
+      <div style="font-size:13px;color:#64748B;line-height:1.7;">
+        신대식 본부장에게 알림이 전송되었습니다.<br>
+        확인 후 연락드리겠습니다.<br><br>
+        📞 긴급 문의: <a href="tel:010-2088-5383" style="color:#C9A84C;">010-2088-5383</a>
+      </div>
+    </div>
+  `;
 }
 </script>
 
