@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KFP Export · 미팅 예약</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A1628;
+    --ink: #162236;
+    --gold: #C9A84C;
+    --gold2: #E8C97A;
+    --green: #22C55E;
+    --blue: #3B82F6;
+    --red: #EF4444;
+    --gray: #64748B;
+    --gray-l: #94A3B8;
+    --bg: #F0F4F8;
+    --white: #FFFFFF;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg);
+    color: #1E293B;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--ink) 100%);
+    color: var(--white);
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .header-badge {
+    display: inline-block;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .header p { color: rgba(255,255,255,0.6); font-size: 13px; }
+
+  .container { max-width: 600px; margin: 0 auto; padding: 24px 16px; }
+
+  /* TYPE SELECTOR */
+  .type-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .type-card {
+    background: var(--white);
+    border: 2px solid #E2E8F0;
+    border-radius: var(--radius);
+    padding: 20px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .type-card:hover { border-color: var(--gold); }
+  .type-card.selected { border-color: var(--gold); background: #FFFBEB; box-shadow: 0 4px 16px rgba(201,168,76,0.15); }
+  .type-icon { font-size: 28px; margin-bottom: 8px; }
+  .type-name { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .type-desc { font-size: 12px; color: var(--gray); line-height: 1.5; }
+  .type-duration { font-size: 11px; color: var(--gold); font-weight: 600; margin-top: 6px; }
+
+  /* CALENDAR */
+  .cal-section { display: none; }
+  .cal-section.visible { display: block; }
+
+  .week-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .week-nav button {
+    background: var(--white);
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--navy);
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .week-nav button:hover { border-color: var(--gold); color: var(--gold); }
+  .week-label { font-size: 15px; font-weight: 700; color: var(--navy); }
+
+  .day-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .day-col { text-align: center; }
+  .day-header {
+    font-size: 11px;
+    color: var(--gray);
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+  }
+  .day-date {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .day-date.today { background: var(--gold); color: var(--white); }
+  .day-date.past { color: #CBD5E1; }
+
+  .time-slot {
+    display: block;
+    width: 100%;
+    padding: 6px 4px;
+    margin-bottom: 4px;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    background: var(--white);
+    font-size: 12px;
+    font-family: inherit;
+    color: var(--navy);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .time-slot:hover { border-color: var(--gold); background: #FFFBEB; }
+  .time-slot.selected { border-color: var(--gold); background: var(--gold); color: var(--white); font-weight: 700; }
+  .time-slot.blocked { background: #F1F5F9; color: #CBD5E1; cursor: not-allowed; border-color: #F1F5F9; text-decoration: line-through; }
+  .time-slot.blocked:hover { background: #F1F5F9; border-color: #F1F5F9; }
+
+  /* FORM */
+  .booking-form {
+    display: none;
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-top: 16px;
+  }
+  .booking-form.visible { display: block; animation: slideUp 0.3s ease; }
+  @keyframes slideUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  .form-title { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .form-sub { font-size: 13px; color: var(--gray); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #F1F5F9; }
+
+  .form-group { margin-bottom: 14px; }
+  .form-label { font-size: 12px; font-weight: 600; color: var(--navy); margin-bottom: 4px; display: block; }
+  .form-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--navy);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-input:focus { border-color: var(--gold); }
+
+  .selected-info {
+    background: #FFFBEB;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+  .selected-info strong { color: var(--gold); }
+
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--gold), #D4B65C);
+    color: var(--navy);
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,168,76,0.3); }
+
+  .notice {
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: #1E40AF;
+    line-height: 1.7;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 11px;
+    color: var(--gray-l);
+  }
+  .footer a { color: var(--gold); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">KFP EXPORT · 한국재무설계</div>
+  <h1>해외 바이어 발굴 상담 예약</h1>
+  <p>편하신 시간에 무료 상담을 예약하세요</p>
+</div>
+
+<div class="container">
+
+  <!-- STEP 1: 미팅 유형 선택 -->
+  <p style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px;">STEP 1. 미팅 방식을 선택하세요</p>
+
+  <div class="type-selector">
+    <div class="type-card" id="type-zoom" onclick="selectType('zoom')">
+      <div class="type-icon">💻</div>
+      <div class="type-name">Zoom 비대면</div>
+      <div class="type-desc">원거리 업체 대상<br>온라인 화상 미팅</div>
+      <div class="type-duration">⏱ 약 60분</div>
+    </div>
+    <div class="type-card" id="type-visit" onclick="selectType('visit')">
+      <div class="type-icon">🤝</div>
+      <div class="type-name">대면 방문</div>
+      <div class="type-desc">수도권 업체 대상<br>직접 방문 미팅</div>
+      <div class="type-duration">⏱ 약 60분 (이동 포함 4시간 배정)</div>
+    </div>
+  </div>
+
+  <!-- STEP 2: 날짜/시간 선택 -->
+  <div class="cal-section" id="calSection">
+    <p style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px;">STEP 2. 날짜와 시간을 선택하세요</p>
+
+    <div class="week-nav">
+      <button onclick="changeWeek(-1)">← 이전 주</button>
+      <span class="week-label" id="weekLabel"></span>
+      <button onclick="changeWeek(1)">다음 주 →</button>
+    </div>
+
+    <div class="day-grid" id="dayGrid"></div>
+
+    <div class="notice" id="typeNotice" style="display:none;"></div>
+  </div>
+
+  <!-- STEP 3: 예약 정보 입력 -->
+  <div class="booking-form" id="bookingForm">
+    <div class="form-title">STEP 3. 예약 정보 입력</div>
+    <div class="form-sub">아래 정보를 입력하시면 예약 확인 문자가 발송됩니다</div>
+
+    <div class="selected-info" id="selectedInfo"></div>
+
+    <div class="form-group">
+      <label class="form-label">회사명 *</label>
+      <input class="form-input" id="companyName" placeholder="예: (주)범우물산" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">대표자명 (담당자명) *</label>
+      <input class="form-input" id="personName" placeholder="예: 김원찬" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">연락처 *</label>
+      <input class="form-input" id="phone" type="tel" placeholder="010-0000-0000" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">주요 취급 품목 (간략히)</label>
+      <input class="form-input" id="product" placeholder="예: 산업자재, 생활용품 등" />
+    </div>
+
+    <button class="submit-btn" onclick="submitBooking()">📅 예약 확정하기</button>
+
+    <div class="notice" style="margin-top:12px;">
+      ℹ️ 예약 확정 시 <strong>신대식 본부장 (010-2088-5383)</strong>에게 SMS로 예약 내역이 전송됩니다.<br>
+      확정 후 Zoom 링크 또는 방문 안내를 별도 연락드리겠습니다.
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  한국재무설계(주) KFP Export 사업부<br>
+  <a href="tel:010-2088-5383">📞 010-2088-5383</a> · <a href="mailto:profinitart@gmail.com">profinitart@gmail.com</a>
+</div>
+
+<script>
+// ── STATE ──
+let meetingType = null;   // 'zoom' or 'visit'
+let selectedSlot = null;  // { date, time, dayName }
+let weekOffset = 0;
+
+// ── 차단 시간 설정 (대식님이 직접 수정) ──
+// 형식: 'YYYY-MM-DD HH:MM' → 해당 시간 차단
+const BLOCKED_SLOTS = [
+  // 예시: '2026-04-01 09:00', '2026-04-01 10:00'
+  // 대식님 기존 일정을 여기에 추가하시면 됩니다
+];
+
+// 대면 미팅 시 4시간 간격 (시작 시간만 표시)
+const VISIT_HOURS = ['09:00','13:00','17:00'];
+// Zoom 미팅 시 1시간 간격
+const ZOOM_HOURS = ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00'];
+
+const DAYS_KR = ['일','월','화','수','목','금','토'];
+
+function selectType(type) {
+  meetingType = type;
+  selectedSlot = null;
+  document.getElementById('type-zoom').classList.toggle('selected', type === 'zoom');
+  document.getElementById('type-visit').classList.toggle('selected', type === 'visit');
+  document.getElementById('calSection').classList.add('visible');
+  document.getElementById('bookingForm').classList.remove('visible');
+
+  const notice = document.getElementById('typeNotice');
+  if (type === 'zoom') {
+    notice.style.display = 'block';
+    notice.innerHTML = '💻 <strong>Zoom 비대면 미팅:</strong> 원거리 업체의 경우 비대면으로 먼저 진행하고, 상호 관심이 확인되면 대면 미팅을 진행합니다. 예약 확정 후 Zoom 링크를 보내드립니다.';
+  } else {
+    notice.style.display = 'block';
+    notice.innerHTML = '🤝 <strong>대면 방문 미팅:</strong> 수도권 업체 대상이며, 이동 시간을 포함하여 1예약당 4시간이 배정됩니다. 시간 선택 시 앞뒤 여유를 확보해두었습니다.';
+  }
+
+  renderWeek();
+}
+
+function getMonday(offset) {
+  const now = new Date();
+  const day = now.getDay();
+  const diff = now.getDate() - day + (day === 0 ? -6 : 1) + (offset * 7);
+  const monday = new Date(now);
+  monday.setDate(diff);
+  monday.setHours(0,0,0,0);
+  return monday;
+}
+
+function formatDate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function renderWeek() {
+  const monday = getMonday(weekOffset);
+  const days = [];
+  for (let i = 0; i < 5; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    days.push(d);
+  }
+
+  const firstDay = days[0];
+  const lastDay = days[4];
+  document.getElementById('weekLabel').textContent =
+    `${firstDay.getMonth()+1}/${firstDay.getDate()} ~ ${lastDay.getMonth()+1}/${lastDay.getDate()}`;
+
+  const hours = meetingType === 'visit' ? VISIT_HOURS : ZOOM_HOURS;
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  let html = '';
+  days.forEach(d => {
+    const dateStr = formatDate(d);
+    const dayName = DAYS_KR[d.getDay()];
+    const isPast = d < today;
+    const isToday = d.getTime() === today.getTime();
+
+    html += '<div class="day-col">';
+    html += `<div class="day-header">${dayName}</div>`;
+    html += `<div class="day-date${isToday ? ' today' : ''}${isPast ? ' past' : ''}">${d.getDate()}</div>`;
+
+    hours.forEach(time => {
+      const slotKey = dateStr + ' ' + time;
+      const isBlocked = BLOCKED_SLOTS.includes(slotKey) || isPast;
+      const isSelected = selectedSlot && selectedSlot.date === dateStr && selectedSlot.time === time;
+
+      if (isBlocked) {
+        html += `<div class="time-slot blocked">${time}</div>`;
+      } else {
+        html += `<div class="time-slot${isSelected ? ' selected' : ''}" onclick="selectSlot('${dateStr}','${time}','${dayName}')">${time}</div>`;
+      }
+    });
+
+    html += '</div>';
+  });
+
+  document.getElementById('dayGrid').innerHTML = html;
+}
+
+function changeWeek(dir) {
+  weekOffset += dir;
+  if (weekOffset < 0) weekOffset = 0;
+  selectedSlot = null;
+  document.getElementById('bookingForm').classList.remove('visible');
+  renderWeek();
+}
+
+function selectSlot(date, time, dayName) {
+  selectedSlot = { date, time, dayName };
+  renderWeek();  // re-render to show selection
+
+  const typeLabel = meetingType === 'zoom' ? '💻 Zoom 비대면' : '🤝 대면 방문';
+  const duration = meetingType === 'zoom' ? '60분' : '약 60분 (이동 포함 4시간)';
+
+  document.getElementById('selectedInfo').innerHTML =
+    `<strong>${typeLabel}</strong><br>
+     📅 ${date} (${dayName}) ${time}<br>
+     ⏱ 소요시간: ${duration}`;
+
+  document.getElementById('bookingForm').classList.add('visible');
+  document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function submitBooking() {
+  const company = document.getElementById('companyName').value.trim();
+  const person = document.getElementById('personName').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const product = document.getElementById('product').value.trim();
+
+  if (!company || !person || !phone) {
+    alert('회사명, 담당자명, 연락처는 필수 입력 항목입니다.');
+    return;
+  }
+
+  const typeLabel = meetingType === 'zoom' ? 'Zoom비대면' : '대면방문';
+  const smsBody = `[KFP Export 미팅예약]\n${typeLabel}\n일시: ${selectedSlot.date}(${selectedSlot.dayName}) ${selectedSlot.time}\n업체: ${company}\n담당: ${person}\n연락처: ${phone}\n품목: ${product || '미입력'}`;
+
+  // SMS 전송 (모바일에서 작동)
+  const smsUrl = `sms:010-2088-5383?body=${encodeURIComponent(smsBody)}`;
+
+  // 이메일 fallback (PC에서 작동)
+  const emailBody = smsBody.replace(/\n/g, '%0A');
+  const emailUrl = `mailto:profinitart@gmail.com?subject=[미팅예약] ${company} ${selectedSlot.date}&body=${emailBody}`;
+
+  // 모바일 감지
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    window.location.href = smsUrl;
+  } else {
+    window.location.href = emailUrl;
+  }
+
+  // 확인 메시지
+  setTimeout(() => {
+    alert(`예약 요청이 접수되었습니다!\n\n${typeLabel}\n${selectedSlot.date}(${selectedSlot.dayName}) ${selectedSlot.time}\n\n신대식 본부장이 확인 후 연락드리겠습니다.`);
+  }, 500);
+}
+</script>
+
+</body>
+</html>
