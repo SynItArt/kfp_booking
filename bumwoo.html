@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>(주)범우물산 AI 수출 바이어발굴 제안서 | 한국재무설계</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #0A1628;
+    --ink:    #162236;
+    --deep:   #0D1E36;
+    --gold:   #C9A84C;
+    --gold2:  #E8C97A;
+    --gold-dim: rgba(201,168,76,0.15);
+    --cream:  #F7F3EC;
+    --white:  #FFFFFF;
+    --gray:   #8A95A0;
+    --gray-d: #5A6878;
+    --light:  #EDF2F7;
+    --green:  #22C55E;
+    --green-d:#16A34A;
+    --red:    #EF4444;
+    --blue:   #3B82F6;
+    --teal:   #14B8A6;
+    --orange: #F59E0B;
+    --radius: 16px;
+    --shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+    font-weight: 400;
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.75;
+    font-size: 15px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 20%, rgba(201,168,76,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(13,27,42,0.9) 0%, transparent 70%),
+      linear-gradient(160deg, #0A1628 0%, #0D1E36 50%, #081420 100%);
+  }
+
+  /* ── CONFIDENTIAL BANNER ── */
+  .conf-banner {
+    background: linear-gradient(90deg, var(--gold), #D4B65C, var(--gold));
+    color: var(--navy);
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    padding: 6px;
+    text-transform: uppercase;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    position: relative;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 50%;
+    transform: translateX(-50%);
+    width: 60px; height: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+  .sender-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.4);
+    padding: 0.3rem 1rem;
+    border-radius: 2rem;
+    margin-bottom: 1.2rem;
+    font-weight: 500;
+  }
+  .company-name {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    color: var(--white);
+    line-height: 1.2;
+    font-weight: 700;
+  }
+  .company-name em { color: var(--gold); font-style: normal; }
+  .subtitle {
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+  }
+  .date-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    margin-top: 1.1rem;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.35);
+  }
+  .dot { width:5px; height:5px; border-radius:50%; background:var(--gold); display:inline-block; }
+
+  /* ── SNAPSHOT ROW ── */
+  .snapshot {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px;
+    background: rgba(201,168,76,0.1);
+    margin: 2rem 1.5rem;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .snap-item {
+    background: rgba(13,30,54,0.85);
+    padding: 1.2rem 1rem;
+    text-align: center;
+  }
+  .snap-label { font-size: 0.68rem; color: var(--gray); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.3rem; }
+  .snap-value { font-size: 1.05rem; font-weight: 700; color: var(--gold2); }
+  .snap-sub { font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-top: 2px; }
+
+  /* ── TABS ── */
+  .tab-bar {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 1rem 1.5rem;
+    background: rgba(10,22,40,0.95);
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(12px);
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--gray);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.5rem 1.1rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--gold2); border-color: rgba(201,168,76,0.4); }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--gold), #D4B65C);
+    color: var(--navy);
+    border-color: var(--gold);
+    font-weight: 700;
+  }
+
+  .tab-content { display: none; padding: 2rem 1.5rem; max-width: 960px; margin: 0 auto; }
+  .tab-content.active { display: block; animation: fadeUp 0.4s ease; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION TITLES ── */
+  .sec-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    color: var(--white);
+  }
+  .sec-sub {
+    font-size: 0.82rem;
+    color: var(--gray);
+    margin-bottom: 2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: rgba(22,34,54,0.7);
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: var(--radius);
+    padding: 1.8rem;
+    margin-bottom: 1.2rem;
+    backdrop-filter: blur(8px);
+    transition: border-color 0.3s;
+  }
+  .card:hover { border-color: rgba(201,168,76,0.3); }
+  .card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gold2);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card-body { font-size: 0.88rem; color: rgba(255,255,255,0.75); line-height: 1.8; }
+
+  /* ── KPI GRID ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .kpi {
+    background: rgba(22,34,54,0.6);
+    border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 14px;
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .kpi.gold::before { background: linear-gradient(90deg, var(--gold), var(--gold2)); }
+  .kpi.green::before { background: linear-gradient(90deg, var(--green), var(--teal)); }
+  .kpi.blue::before { background: linear-gradient(90deg, var(--blue), #60A5FA); }
+  .kpi.red::before { background: linear-gradient(90deg, var(--red), var(--orange)); }
+  .kpi-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .kpi-num { font-size: 1.8rem; font-weight: 900; color: var(--gold2); }
+  .kpi-label { font-size: 0.75rem; color: var(--gray); margin-top: 0.3rem; letter-spacing: 0.05em; }
+  .kpi-note { font-size: 0.68rem; color: rgba(255,255,255,0.35); margin-top: 0.3rem; }
+
+  /* ── TABLE ── */
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.85rem;
+  }
+  .comp-table th {
+    background: rgba(201,168,76,0.15);
+    color: var(--gold2);
+    padding: 0.8rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(201,168,76,0.3);
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+  }
+  .comp-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.8);
+  }
+  .comp-table tr:hover td { background: rgba(201,168,76,0.04); }
+  .tag-good { color: var(--green); font-weight: 600; }
+  .tag-bad { color: var(--red); font-weight: 600; }
+  .tag-warn { color: var(--orange); font-weight: 600; }
+  .tag-info { color: var(--blue); font-weight: 600; }
+
+  /* ── BAR CHART (CSS) ── */
+  .bar-chart { margin: 1.5rem 0; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    gap: 0.8rem;
+  }
+  .bar-label { min-width: 80px; font-size: 0.78rem; color: var(--gray); text-align: right; }
+  .bar-track { flex: 1; height: 28px; background: rgba(255,255,255,0.05); border-radius: 6px; overflow: hidden; position: relative; }
+  .bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--navy);
+    transition: width 1.5s cubic-bezier(0.23,1,0.32,1);
+  }
+  .bar-fill.gold { background: linear-gradient(90deg, var(--gold), var(--gold2)); }
+  .bar-fill.green { background: linear-gradient(90deg, var(--green), var(--teal)); }
+  .bar-fill.blue { background: linear-gradient(90deg, var(--blue), #60A5FA); }
+  .bar-fill.red { background: linear-gradient(90deg, var(--red), var(--orange)); }
+
+  /* ── PROCESS STEPS ── */
+  .steps { margin: 1.5rem 0; }
+  .step {
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+    align-items: flex-start;
+  }
+  .step-num {
+    width: 44px; height: 44px;
+    min-width: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), #D4B65C);
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 16px rgba(201,168,76,0.3);
+  }
+  .step-body { flex: 1; }
+  .step-title { font-weight: 700; color: var(--white); margin-bottom: 0.2rem; font-size: 0.95rem; }
+  .step-desc { font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.7; }
+  .step-period {
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-size: 0.7rem;
+    color: var(--gold);
+    background: rgba(201,168,76,0.12);
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    font-weight: 600;
+  }
+
+  /* ── ROI SIMULATOR ── */
+  .roi-box {
+    background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(22,34,54,0.8));
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin: 1.5rem 0;
+  }
+  .roi-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.88rem;
+  }
+  .roi-row:last-child { border-bottom: none; }
+  .roi-label { color: rgba(255,255,255,0.7); }
+  .roi-val { font-weight: 700; color: var(--gold2); }
+  .roi-total {
+    background: rgba(201,168,76,0.15);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .roi-total .big { font-size: 1.6rem; font-weight: 900; color: var(--gold); }
+
+  /* ── SIGNAL GRID ── */
+  .signal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  @media(max-width:600px) { .signal-grid { grid-template-columns: 1fr; } }
+  .signal-card {
+    border-radius: 12px;
+    padding: 1.2rem;
+  }
+  .signal-card.positive {
+    background: rgba(34,197,94,0.08);
+    border: 1px solid rgba(34,197,94,0.2);
+  }
+  .signal-card.negative {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2);
+  }
+  .signal-header {
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.05em;
+  }
+  .signal-card.positive .signal-header { color: var(--green); }
+  .signal-card.negative .signal-header { color: var(--red); }
+  .signal-item {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.7);
+    padding: 0.3rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .signal-item::before {
+    position: absolute;
+    left: 0;
+    font-size: 0.8rem;
+  }
+  .signal-card.positive .signal-item::before { content: '✓'; color: var(--green); }
+  .signal-card.negative .signal-item::before { content: '⚠'; color: var(--red); }
+
+  /* ── CTA ── */
+  .cta-wrap {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(201,168,76,0.15);
+  }
+  .cta-wrap h3 { font-family: 'Noto Serif KR', serif; font-size: 1.4rem; margin-bottom: 0.8rem; }
+  .cta-wrap p { color: rgba(255,255,255,0.55); font-size: 0.88rem; line-height: 1.8; margin-bottom: 1.5rem; }
+  .cta-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold), #D4B65C);
+    color: var(--navy);
+    text-decoration: none;
+    padding: 0.9rem 2.5rem;
+    border-radius: 2rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 20px rgba(201,168,76,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,168,76,0.45); }
+  .contact-info { margin-top: 1.5rem; font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.8; }
+  .contact-info strong { color: var(--gold2); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.25);
+    border-top: 1px solid rgba(201,168,76,0.08);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent);
+    margin: 2rem 0;
+  }
+
+  /* ── 2-COL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media(max-width:700px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight-box {
+    background: rgba(201,168,76,0.08);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 1.2rem 1.5rem;
+    margin: 1.2rem 0;
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.8);
+  }
+  .highlight-box strong { color: var(--gold2); }
+
+  /* ── ACCESSIBILITY ── */
+  @media (prefers-contrast: high) {
+    body { font-size: 17px; }
+    .card-body, .step-desc, .signal-item { color: rgba(255,255,255,0.9); font-size: 0.95rem; }
+    .sec-sub, .snap-sub { color: rgba(255,255,255,0.7); }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .tab-bar, .conf-banner, .floating-cta { display: none; }
+    .tab-content { display: block !important; page-break-before: always; }
+    body { background: white; color: #1a1a1a; }
+  }
+
+  /* ── FLOATING CTA ── */
+  .floating-cta {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--gold), #D4B65C);
+    color: var(--navy);
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    box-shadow: 0 6px 24px rgba(201,168,76,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+  }
+  .floating-cta:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(201,168,76,0.55); }
+  .floating-cta .pulse {
+    width: 8px; height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.5); }
+  }
+
+  /* ── MINI CTA (탭 하단) ── */
+  .mini-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    background: rgba(201,168,76,0.06);
+    border: 1px dashed rgba(201,168,76,0.2);
+    border-radius: var(--radius);
+    flex-wrap: wrap;
+  }
+  .mini-cta-text { font-size: 0.82rem; color: rgba(255,255,255,0.5); }
+  .mini-cta-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold), #D4B65C);
+    color: var(--navy);
+    text-decoration: none;
+    padding: 0.6rem 1.6rem;
+    border-radius: 2rem;
+    font-weight: 700;
+    font-size: 0.82rem;
+    box-shadow: 0 2px 8px rgba(201,168,76,0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .mini-cta-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,168,76,0.4); }
+
+  /* ── FLOATING CTA (화면 하단 항상 고정) ── */
+  .float-cta {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(10,22,40,0.96);
+    backdrop-filter: blur(12px);
+    border-top: 2px solid rgba(201,168,76,0.3);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    z-index: 200;
+  }
+  .float-cta-text { font-size: 0.8rem; color: rgba(255,255,255,0.55); }
+  @media(max-width:500px) { .float-cta-text { display: none; } }
+  .float-cta-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: linear-gradient(135deg, var(--gold), #D4B65C);
+    color: var(--navy); text-decoration: none;
+    padding: 10px 22px; border-radius: 2rem;
+    font-weight: 700; font-size: 0.88rem;
+    box-shadow: 0 4px 16px rgba(201,168,76,0.35);
+    transition: transform 0.2s;
+    animation: floatPulse 2.5s infinite;
+  }
+  .float-cta-btn:hover { transform: translateY(-2px); }
+  @keyframes floatPulse {
+    0%,100% { box-shadow: 0 4px 16px rgba(201,168,76,0.35); }
+    50% { box-shadow: 0 4px 24px rgba(201,168,76,0.6); }
+  }
+  .float-phone { color: var(--gold2); text-decoration: none; font-size: 0.78rem; }
+
+  /* 하단 여유 (플로팅 버튼과 겹침 방지) */
+  footer { padding-bottom: 70px; }
+</style>
+</head>
+<body>
+
+<!-- CONFIDENTIAL BANNER -->
+<div class="conf-banner">CONFIDENTIAL · 대외비 · (주)범우물산 김원찬 대표님께 드리는 맞춤 제안서</div>
+
+<!-- HEADER -->
+<header>
+  <div class="sender-tag">한국재무설계 · KFP EXPORT</div>
+  <h1 class="company-name"><em>(주)범우물산</em><br>수산물 수출 바이어발굴 제안서</h1>
+  <p class="subtitle">K-씨푸드 33.3억$ 시대, AI로 글로벌 수산물 바이어를 찾는 방법</p>
+  <div class="date-badge">
+    <span class="dot"></span> 2026년 4월 <span class="dot"></span> 한국재무설계(주) KFP Export 사업부
+  </div>
+</header>
+
+<!-- COMPANY SNAPSHOT -->
+<div class="snapshot">
+  <div class="snap-item">
+    <div class="snap-label">기업명</div>
+    <div class="snap-value">(주)범우물산</div>
+    <div class="snap-sub">수산물 제조가공 · 수출</div>
+  </div>
+  <div class="snap-item">
+    <div class="snap-label">대표이사</div>
+    <div class="snap-value">김원찬</div>
+    <div class="snap-sub">부산 사하구</div>
+  </div>
+  <div class="snap-item">
+    <div class="snap-label">2024 매출</div>
+    <div class="snap-value">6.28억원</div>
+    <div class="snap-sub">전년 대비 955%↑</div>
+  </div>
+  <div class="snap-item">
+    <div class="snap-label">영업이익률</div>
+    <div class="snap-value">10.57%</div>
+    <div class="snap-sub">수익 구조 검증</div>
+  </div>
+  <div class="snap-item">
+    <div class="snap-label">설립</div>
+    <div class="snap-value">2022.11</div>
+    <div class="snap-sub">고속 성장 궤도</div>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<nav class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('analysis')">① 기업분석</button>
+  <button class="tab-btn" onclick="showTab('market')">② 시장기회</button>
+  <button class="tab-btn" onclick="showTab('service')">③ 서비스소개</button>
+  <button class="tab-btn" onclick="showTab('roadmap')">④ 실행로드맵</button>
+  <button class="tab-btn" onclick="showTab('revenue')">⑤ 수익모델</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- TAB 1: 기업분석                              -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="tab-content active" id="tab-analysis">
+  <div class="sec-title">기업 재무 분석</div>
+  <div class="sec-sub">CRETOP 기업브리핑 (2026.03.31 기준) 데이터 기반 · 결산일 2024.12.31</div>
+
+  <!-- KPI -->
+  <div class="kpi-grid">
+    <div class="kpi gold">
+      <div class="kpi-icon">📈</div>
+      <div class="kpi-num">955%</div>
+      <div class="kpi-label">매출 성장률</div>
+      <div class="kpi-note">6천만 → 6.28억 (1년)</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-num">79.92%</div>
+      <div class="kpi-label">ROE (자기자본이익률)</div>
+      <div class="kpi-note">업종 평균 대비 월등히 높음</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-icon">🏗️</div>
+      <div class="kpi-num">243%</div>
+      <div class="kpi-label">총자산 증가율</div>
+      <div class="kpi-note">1.43억 → 4.9억</div>
+    </div>
+    <div class="kpi gold">
+      <div class="kpi-icon">📊</div>
+      <div class="kpi-num">10.57%</div>
+      <div class="kpi-label">영업이익률</div>
+      <div class="kpi-note">2.22% → 10.57% 개선</div>
+    </div>
+  </div>
+
+  <!-- GROWTH BAR CHART -->
+  <div class="card">
+    <div class="card-title">📊 3개년 성장 추이 (단위: 백만원)</div>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">2022 매출</div>
+        <div class="bar-track"><div class="bar-fill gold" style="width:1%">-</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">2023 매출</div>
+        <div class="bar-track"><div class="bar-fill gold" style="width:10%">60</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">2024 매출</div>
+        <div class="bar-track"><div class="bar-fill gold" style="width:100%">628</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">2023 순이익</div>
+        <div class="bar-track"><div class="bar-fill green" style="width:1.5%">1</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">2024 순이익</div>
+        <div class="bar-track"><div class="bar-fill green" style="width:10%">64</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGNALS -->
+  <div class="signal-grid">
+    <div class="signal-card positive">
+      <div class="signal-header">✅ 긍정 시그널</div>
+      <div class="signal-item">매출 955% 성장 — 시장 수요 검증 완료</div>
+      <div class="signal-item">ROE 79.92% — 투자 효율 극대화 구간</div>
+      <div class="signal-item">영업이익률 10.57% — 수익성 있는 비즈니스</div>
+      <div class="signal-item">이자보상배수 25.2배 — 이자 지불 능력 우수</div>
+      <div class="signal-item">연구개발전담부서 인증 보유</div>
+      <div class="signal-item">법인등기 정상 / 부가세 일반과세자</div>
+    </div>
+    <div class="signal-card negative">
+      <div class="signal-header">⚠️ 주의 포인트</div>
+      <div class="signal-item">부채비율 339% — 레버리지 관리 필요</div>
+      <div class="signal-item">현금영업이익 -1.74억 — 운전자금 부담</div>
+      <div class="signal-item">종업원 4명 — 소규모 인력</div>
+      <div class="signal-item">주요 거래처 정보 미공개</div>
+      <div class="signal-item">설립 2년차 — 업력 짧음</div>
+      <div class="signal-item">벤처/이노비즈/메인비즈 미인증</div>
+    </div>
+  </div>
+
+  <!-- FINANCIAL DIAGNOSIS -->
+  <div class="card">
+    <div class="card-title">🔍 CRETOP 요약 재무진단</div>
+    <div class="card-body">
+      <table class="comp-table">
+        <tr><th>항목</th><th>등급</th><th>해석</th></tr>
+        <tr><td>성장성</td><td class="tag-good">우수</td><td>매출·자산 큰 폭 증가</td></tr>
+        <tr><td>수익성</td><td class="tag-good">우수</td><td>영업이익률·ROE 모두 고수준</td></tr>
+        <tr><td>재무구조</td><td class="tag-warn">양호</td><td>부채비율 높으나 관리 가능 수준</td></tr>
+        <tr><td>부채상환능력</td><td class="tag-good">우수</td><td>이자보상배수 25.2배로 안정</td></tr>
+        <tr><td>활동성</td><td class="tag-warn">양호</td><td>총자본회전율 개선 추세</td></tr>
+        <tr><td>현금흐름등급</td><td class="tag-info">CR3</td><td>현금흐름 창출능력 중간단계</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <strong>💡 핵심 인사이트:</strong> (주)범우물산은 설립 2년 만에 매출 6억대를 달성한 <strong>수산물 가공·수출 기업</strong>입니다. 
+    채용공고에서 "수산물 가공 및 수출 전문 기업"으로 스스로를 소개하고 있으며, 수출 사무·물류 관리 직무를 모집 중입니다.
+    부산 사하구의 <strong>수산물 수출 인프라</strong>(국제수산물도매시장, 수산가공선진화단지)와 결합하면, 
+    기존 수출 채널을 AI 바이어 발굴로 대폭 확장할 수 있습니다.
+  </div>
+  <div class="mini-cta">
+    <span class="mini-cta-text">이 분석이 흥미로우시다면?</span>
+    <a class="mini-cta-btn" href="https://script.google.com/macros/s/AKfycbwXNBC7ARWlN2NdzxC-njZXp5PUBsPOuktH2B9FjGGGJni53w7dOxtO--pQboTVPXOyjQ/exec" target="_blank">📅 무료 상담 예약</a>
+  </div>
+</div>
+<!-- ═══════════════════════════════════════════ -->
+<div class="tab-content" id="tab-market">
+  <div class="sec-title">K-씨푸드 수출 시장 분석</div>
+  <div class="sec-sub">해양수산부 공식 데이터 기반 · 2024~2025 수산식품 수출 동향</div>
+
+  <div class="card">
+    <div class="card-title">🐟 K-씨푸드, 역대 최대 수출 행진 중</div>
+    <div class="card-body">
+      <p>한국 수산식품 수출은 2025년 <strong>33.3억 달러</strong>를 돌파하며 역대 최대 실적을 경신했습니다. 
+      김 수출이 11.3억 달러(+13.7%)로 전체를 견인하고 있으며, 넙치·굴·전복 등 가공 수산물도 고성장세입니다.
+      해양수산부는 2026년 수산물 해외시장개척 예산을 <strong>791억원</strong>(전년 대비 +236억원)으로 확대 편성했습니다.
+      범우물산에게는 정부 지원과 시장 성장이 동시에 작동하는 최적의 타이밍입니다.</p>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi gold">
+      <div class="kpi-icon">🐟</div>
+      <div class="kpi-num">33.3억$</div>
+      <div class="kpi-label">K-씨푸드 수출 (2025)</div>
+      <div class="kpi-note">역대 최대 · 전년비 +9.7%</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-icon">📈</div>
+      <div class="kpi-num">+16.4%</div>
+      <div class="kpi-label">유럽 수출 성장률</div>
+      <div class="kpi-note">2024 기준 · 2.27억$</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-num">791억</div>
+      <div class="kpi-label">정부 수출지원 예산 (2026)</div>
+      <div class="kpi-note">수출바우처 158개사 지원</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌏 수산물 수출 주요 국가별 현황</div>
+    <div class="card-body">
+      <p style="margin-bottom:1rem;font-size:0.82rem;color:var(--gray);">※ 해양수산부 2024년 수산식품 수출 실적 기준</p>
+      <table class="comp-table">
+        <tr><th>국가</th><th>수출액</th><th>성장률</th><th>주요 품목</th><th>범우물산 적합도</th></tr>
+        <tr><td>🇯🇵 일본</td><td>6.59억$</td><td class="tag-good">+3.4%</td><td>김, 굴, 참치, 활어</td><td class="tag-good">★★★ 최적</td></tr>
+        <tr><td>🇺🇸 미국</td><td>4.79억$</td><td class="tag-good">+11.7%</td><td>김, 게살, 가공수산물</td><td class="tag-info">★★☆ 유망</td></tr>
+        <tr><td>🇪🇺 유럽</td><td>2.27억$</td><td class="tag-good">+16.4%</td><td>김, 가공수산물</td><td class="tag-info">★★☆ 확대중</td></tr>
+        <tr><td>🇨🇳 중국</td><td>주요 시장</td><td class="tag-info">성장세</td><td>냉동 수산물, 건어물</td><td class="tag-info">★★☆</td></tr>
+        <tr><td>🇻🇳 베트남</td><td>주요 시장</td><td class="tag-info">성장세</td><td>냉동 수산물, 원료</td><td class="tag-warn">★☆☆ 확인필요</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚓ 부산 사하구 = 수산물 수출 최적 입지</div>
+    <div class="card-body">
+      <p>범우물산이 위치한 부산 사하구는 대한민국 수산물 수출의 심장부입니다:</p>
+      <br>
+      <p>• <strong>부산국제수산물도매시장:</strong> 수산가공선진화단지 47개 업체 입주, 출입국관리·검역소 상주 → 원스톱 통관</p>
+      <p>• <strong>감천항/부산신항:</strong> 수산물 전용 냉동·냉장 물류 인프라, 세계 2위 환적항</p>
+      <p>• <strong>국립수산물품질관리원 부산:</strong> 수출 위생증명·검사 현지 처리 가능</p>
+      <p>• <strong>KOTRA 부산/한국수산물무역협회:</strong> 해외 바이어 매칭 이벤트, 수출 컨설팅</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏛️ 정부 수출 지원 (범우물산 활용 가능)</div>
+    <div class="card-body">
+      <table class="comp-table">
+        <tr><th>지원사업</th><th>내용</th><th>규모</th></tr>
+        <tr><td>수출바우처</td><td>수출기업 역량강화 자금 (단계별 맞춤)</td><td>연 최대 2.2억원/기업</td></tr>
+        <tr><td>우수수산물 정책자금</td><td>원료구매·가공·저장 운영자금 융자</td><td>1,324억원 (2024)</td></tr>
+        <tr><td>유망상품화 지원</td><td>수출용 수산식품 개발 (68개사)</td><td>해양수산부 직접지원</td></tr>
+        <tr><td>국제인증 취득</td><td>HACCP·ISO·FDA 등 50종 인증비 지원</td><td>해양수산부</td></tr>
+        <tr><td>해외박람회 참가</td><td>수산물 전문 박람회 파견 (유럽 6회)</td><td>해양수산부</td></tr>
+      </table>
+      <p style="margin-top:0.8rem;font-size:0.78rem;color:var(--gray);">※ KFP Export는 위 정부 지원과 병행하여 AI 기반 직접 바이어 발굴을 제공합니다. 경쟁이 아닌 보완 관계입니다.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <strong>💡 미팅 시 확인 포인트:</strong> 범우물산의 구체적 가공 품목(김/굴/고등어/참치/냉동수산물 등)과 
+    현재 수출 실적, HACCP·위생 인증 보유 여부를 확인하면 <strong>품목별 HS코드 기반 수입국 데이터</strong>와 
+    AI 바이어 매칭을 즉시 설계할 수 있습니다.
+  </div>
+  <div class="mini-cta">
+    <span class="mini-cta-text">우리 수산물에 맞는 바이어를 찾아볼까요?</span>
+    <a class="mini-cta-btn" href="https://script.google.com/macros/s/AKfycbwXNBC7ARWlN2NdzxC-njZXp5PUBsPOuktH2B9FjGGGJni53w7dOxtO--pQboTVPXOyjQ/exec" target="_blank">📅 무료 상담 예약</a>
+  </div>
+</div>
+<!-- ═══════════════════════════════════════════ -->
+<div class="tab-content" id="tab-service">
+  <div class="sec-title">수산물 해외 바이어 발굴 서비스</div>
+  <div class="sec-sub">한국재무설계 KFP Export · 글로벌 B2B 수산물 바이어 AI 매칭</div>
+
+  <div class="card">
+    <div class="card-title">🤖 일반 DB vs AI 바이어 매칭 — 무엇이 다른가?</div>
+    <div class="card-body">
+      <table class="comp-table">
+        <tr><th>비교 항목</th><th>일반 DB 이메일</th><th>AI 바이어 매칭</th></tr>
+        <tr><td>이메일 오픈율</td><td class="tag-bad">3~5%</td><td class="tag-good">12~27% <span style="font-size:0.7rem;color:var(--gray);font-weight:400">(실제 캠페인 기록 기준)</span></td></tr>
+        <tr><td>응답률</td><td class="tag-bad">1~2%</td><td class="tag-good">3~5% <span style="font-size:0.7rem;color:var(--gray);font-weight:400">(업계 평균 대비 2~3배)</span></td></tr>
+        <tr><td>바이어 검증</td><td class="tag-bad">미검증</td><td class="tag-good">수입이력 기반 검증</td></tr>
+        <tr><td>스팸 처리율</td><td class="tag-bad">빈번</td><td class="tag-good">맞춤 메시지 → 스팸율 감소</td></tr>
+        <tr><td>서비스 구성</td><td>DB 구매비 별도</td><td class="tag-good">DB+발송+관리 일체형</td></tr>
+        <tr><td>바이어 규모</td><td>수만 건</td><td class="tag-good">1억+ 글로벌 B2B 담당자 DB</td></tr>
+        <tr><td>리포트 제공</td><td class="tag-bad">없음</td><td class="tag-good">월간 성과 리포트</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- PROCESS -->
+  <div class="card">
+    <div class="card-title">🔄 AI 바이어 매칭 프로세스</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">수산물 바이어 스마트 필터링</div>
+          <div class="step-desc">글로벌 B2B DB에서 수산물 수입 이력이 있는 바이어를 선별합니다. 품목(김/굴/냉동수산물 등), 국가, 거래 규모별 정밀 타겟팅으로 범우물산 제품과 무관한 업체를 걸러냅니다.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">딥랭크 알고리즘 — 구매력 검증</div>
+          <div class="step-desc">최근 수입 실적, 거래 규모, 활동 이력을 AI가 분석하여 실제 구매 가능성을 점수화합니다. 높은 점수의 바이어를 우선 추천하되, 최종 판단은 범우물산과 함께 합니다.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">AI 세일즈 에이전트 — 자동 컨택</div>
+          <div class="step-desc">AI가 바이어별 1:1 맞춤형 거래제안서(CL)와 인콰이어리(Inquiry)를 자동 생성·발송합니다. 수동 콜드메일 대비 오픈율이 높고, 바이어 이름·품목·최근 수입 이력을 반영한 개인화 메시지로 신뢰를 확보합니다.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">리드 전달 & 후속 대응</div>
+          <div class="step-desc">관심 바이어 실시간 리포트 제공. 바이어 접촉횟수, 문의사항 분석, 기업별 1:1 미팅수 및 대응내용을 정리하여 전달합니다.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">계약 유도 & 성과 측정</div>
+          <div class="step-desc">바이어와 기업 간 계약을 유도하고, 바이어 응답률·계약 성사율 등 정량적 성과를 측정하여 보고합니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE STUDY -->
+  <div class="card">
+    <div class="card-title">📋 실제 캠페인 성과 데이터</div>
+    <div class="card-body">
+      <p style="font-size:0.78rem;color:var(--gray);margin-bottom:1rem;">※ 아래 데이터는 AI 바이어 매칭 플랫폼의 실제 고객사 캠페인 기록입니다 (기업명 비공개)</p>
+      <div class="two-col">
+        <div style="background:rgba(201,168,76,0.06);border-radius:12px;padding:1.2rem;">
+          <strong style="color:var(--gold2)">사례 A — 15일 / 10회차 컨택</strong>
+          <p style="margin-top:0.5rem;font-size:0.85rem;">총 발송: 35,324건</p>
+          <p style="font-size:0.85rem;">총 오픈: 4,538건 <span style="color:var(--gold);">(오픈율 5~19%)</span></p>
+          <p style="font-size:0.85rem;">방문·반응: 809회</p>
+          <p style="font-size:0.75rem;color:var(--gray);margin-top:0.5rem;">회차별 오픈율: 5.32% ~ 19.19% (평균 12.8%)</p>
+        </div>
+        <div style="background:rgba(201,168,76,0.06);border-radius:12px;padding:1.2rem;">
+          <strong style="color:var(--gold2)">사례 B — 14일 / 10회차 컨택</strong>
+          <p style="margin-top:0.5rem;font-size:0.85rem;">총 발송: 34,195건</p>
+          <p style="font-size:0.85rem;">총 오픈: 6,124건 <span style="color:var(--gold);">(오픈율 15~27%)</span></p>
+          <p style="font-size:0.85rem;">방문·반응: 1,506회</p>
+          <p style="font-size:0.75rem;color:var(--gray);margin-top:0.5rem;">회차별 오픈율: 15.37% ~ 26.84% (평균 17.9%)</p>
+        </div>
+      </div>
+      <div style="margin-top:1rem;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:10px;padding:1rem;font-size:0.82rem;color:rgba(255,255,255,0.7);">
+        <strong style="color:var(--blue);">📊 해석:</strong> 일반 콜드 이메일 오픈율 3~5% 대비, AI 타겟팅은 <strong>평균 12~18%</strong>를 기록했습니다. 
+        반복 캠페인과 타겟 정밀도 개선을 통해 오픈율은 점진적으로 상승합니다. 중요한 것은 오픈율보다 <strong>실제 반응(방문·문의)</strong>이며, 사례 B에서는 14일간 1,506건의 반응을 이끌어냈습니다.
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <strong>⚡ 핵심 차별점:</strong> KFP Export는 단순 DB 판매가 아닙니다. 
+    바이어 발굴부터 검증, 1차 접촉, 미팅 주선까지 실무를 대행합니다.
+    범우물산은 제품 경쟁력과 견적 대응에 집중하시면 됩니다.
+    <br><span style="font-size:0.78rem;color:var(--gray);">※ 수출 행정(통관·물류·결제)은 KFP Export의 역할 범위가 아니며, 전문 포워더/관세사를 연결해드립니다.</span>
+  </div>
+  <div class="mini-cta">
+    <span class="mini-cta-text">우리 제품으로 바이어를 찾아볼까요?</span>
+    <a class="mini-cta-btn" href="https://script.google.com/macros/s/AKfycbwXNBC7ARWlN2NdzxC-njZXp5PUBsPOuktH2B9FjGGGJni53w7dOxtO--pQboTVPXOyjQ/exec" target="_blank">📅 무료 상담 예약</a>
+  </div>
+</div>
+<!-- ═══════════════════════════════════════════ -->
+<div class="tab-content" id="tab-roadmap">
+  <div class="sec-title">수산물 수출 실행 로드맵</div>
+  <div class="sec-sub">계약 체결 후 단계별 진행 일정 · 수산물 수출 특화 프로세스</div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">수산물 제품 분석 & 수출 적합성 검토</div>
+        <div class="step-desc">범우물산 가공 품목 분석(품목별 HS코드 분류), HACCP·위생 인증 현황 확인, 수출 대상국 위생 규정 검토, 영문 제품 카탈로그·성적서 제작 지원. 기존 수출 실적이 있다면 채널 분석 병행.</div>
+        <div class="step-period">1~2주차</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">AI 바이어 리스트업 & 1차 검증</div>
+        <div class="step-desc">글로벌 B2B DB에서 범우물산 품목의 수입 이력이 확인된 바이어를 선별합니다. 수입이력/거래규모/신용도를 교차 검증하여 실제 접촉 가치가 있는 30~50곳을 리스트업합니다.</div>
+        <div class="step-period">2~4주차</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">맞춤형 아웃리치 & 1차 컨택</div>
+        <div class="step-desc">AI가 바이어별 1:1 메시지 자동 생성 → 영문 카탈로그 첨부 발송. 관심 바이어 실시간 리포트. 주간 진행 보고서 제공.</div>
+        <div class="step-period">4~8주차</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">유망 바이어 미팅 주선</div>
+        <div class="step-desc">관심 의사 밝힌 바이어와 화상 미팅 or 현지 방문 미팅 코디네이션. 통역 지원(영어/중국어/일본어). 견적서 작성·협상 지원.</div>
+        <div class="step-period">8~12주차</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">계약 체결 & 수출 실행 지원</div>
+        <div class="step-desc">계약서 검토, 수출서류 작성 지원, 대금결제 추적. 첫 수출 성사 후 반복 오더를 위한 관계관리 체계 구축.</div>
+        <div class="step-period">3개월~</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TIMELINE VISUAL -->
+  <div class="card">
+    <div class="card-title">📅 월별 예상 진행표</div>
+    <div class="card-body">
+      <table class="comp-table">
+        <tr><th>월</th><th>주요 활동</th><th>예상 산출물</th></tr>
+        <tr><td class="tag-info">1개월</td><td>제품 분석 + 바이어 리스트업</td><td>타겟 국가 보고서, 검증된 바이어 30~50곳 리스트</td></tr>
+        <tr><td class="tag-info">2개월</td><td>1차 아웃리치 (500건 발송)</td><td>주간 리포트, 반응 바이어 10~20곳</td></tr>
+        <tr><td class="tag-good">3개월</td><td>후속 컨택 + 미팅 주선</td><td>화상미팅 1~3건, 월간 성과 보고서</td></tr>
+        <tr><td class="tag-good">4~6개월</td><td>견적·샘플 교환 + 협상</td><td>첫 수출 계약 1건 타겟</td></tr>
+        <tr><td class="tag-warn">6~12개월</td><td>첫 수출 실행 + 추가 발굴</td><td>거래 관계 안정화 + 신규 시장 확장</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="mini-cta">
+    <span class="mini-cta-text">우리 품목에 맞는 실행 계획이 궁금하시면?</span>
+    <a class="mini-cta-btn" href="https://script.google.com/macros/s/AKfycbwXNBC7ARWlN2NdzxC-njZXp5PUBsPOuktH2B9FjGGGJni53w7dOxtO--pQboTVPXOyjQ/exec" target="_blank">📅 무료 상담 예약</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- TAB 5: 수익모델                              -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="tab-content" id="tab-revenue">
+  <div class="sec-title">수익모델 & ROI 시뮬레이션</div>
+  <div class="sec-sub">범우물산의 수출 수익 시나리오 · 보수적 추정 기준</div>
+
+  <!-- SERVICE PLANS -->
+  <div class="card">
+    <div class="card-title">💼 서비스 플랜</div>
+    <div class="card-body">
+      <div class="two-col">
+        <div style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:1.5rem;">
+          <div style="color:var(--blue);font-weight:700;font-size:0.85rem;letter-spacing:0.1em;margin-bottom:0.5rem;">PRO 플랜</div>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);">매달 평균 3개 거래 문의 주선</p>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);">500개 이메일 발송</p>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);">잠재 바이어 리스트 + 월간 보고서</p>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);">바이어 구매의도 추론</p>
+          <p style="margin-top:0.8rem;color:var(--blue);font-weight:700;">✓ 초기 진입에 적합</p>
+        </div>
+        <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:1.5rem;">
+          <div style="color:var(--gold);font-weight:700;font-size:0.85rem;letter-spacing:0.1em;margin-bottom:0.5rem;">ELITE 플랜 ⭐ 권장</div>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);">매달 평균 6개 거래 문의 주선</p>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);">1,000개 이메일 발송</p>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);">잠재 바이어 리스트 + 월간 보고서</p>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);">바이어 구매의도 추론</p>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);"><strong>3개월 결제 시 평균 3회 미팅 목표</strong></p>
+          <p style="margin-top:0.8rem;color:var(--gold);font-weight:700;">✓ 적극적 수출 개척에 최적</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROI SIMULATION -->
+  <div class="roi-box">
+    <div style="text-align:center;margin-bottom:1.2rem;">
+      <span style="font-size:1.1rem;font-weight:700;color:var(--gold2);">📊 현실적 ROI 시뮬레이션 (12개월 기준)</span>
+      <p style="font-size:0.75rem;color:var(--gray);margin-top:0.3rem;">※ Year 1은 파이프라인 구축 기간입니다. 즉각적 수익보다 관계 형성이 목표입니다.</p>
+    </div>
+    <div class="roi-row">
+      <span class="roi-label">AI 바이어 컨택 수 (연간)</span>
+      <span class="roi-val">6,000~12,000건</span>
+    </div>
+    <div class="roi-row">
+      <span class="roi-label">예상 오픈율</span>
+      <span class="roi-val">12~18% <span style="font-size:0.7rem;color:var(--gray);">(실제 캠페인 평균)</span></span>
+    </div>
+    <div class="roi-row">
+      <span class="roi-label">관심 바이어 (응답)</span>
+      <span class="roi-val">60~200건</span>
+    </div>
+    <div class="roi-row">
+      <span class="roi-label">미팅 전환</span>
+      <span class="roi-val">5~15건</span>
+    </div>
+    <div class="roi-row">
+      <span class="roi-label">계약 성사 (현실적 추정)</span>
+      <span class="roi-val">1~3건</span>
+    </div>
+    <div class="roi-row">
+      <span class="roi-label">건당 평균 수출 규모</span>
+      <span class="roi-val">$5,000~$30,000</span>
+    </div>
+    <div class="roi-total">
+      <div style="color:rgba(255,255,255,0.6);font-size:0.82rem;margin-bottom:0.3rem;">Year 1 예상 수출 매출 (보수적)</div>
+      <div class="big">$5,000 ~ $90,000</div>
+      <div style="color:rgba(255,255,255,0.5);font-size:0.78rem;margin-top:0.3rem;">(약 650만원 ~ 1.2억원) · Year 2부터 반복 오더 기대</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📈 범우물산 + 수출 = 성장 시나리오</div>
+    <div class="card-body">
+      <table class="comp-table">
+        <tr><th>시나리오</th><th>현재 (국내)</th><th>Year 1 (기반 구축)</th><th>Year 2~ (확장)</th></tr>
+        <tr><td>연간 매출</td><td>6.28억</td><td class="tag-info">6.4~7.5억</td><td class="tag-good">8~12억</td></tr>
+        <tr><td>수출 비중</td><td>0%</td><td class="tag-info">2~15%</td><td class="tag-good">20~40%</td></tr>
+        <tr><td>해외 거래처</td><td>없음</td><td class="tag-info">1~3건 신규 계약</td><td class="tag-good">반복 오더 + 신규</td></tr>
+        <tr><td>기업 가치</td><td>국내 도매상</td><td class="tag-info">수출 실적 보유 기업</td><td class="tag-good">글로벌 트레이딩</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <strong>💡 솔직한 관점:</strong> Year 1은 <strong>파이프라인 구축 투자</strong>입니다. 
+    첫해에 바로 큰 수익을 기대하기보다, 해외 수산물 바이어 네트워크를 형성하고 신뢰를 쌓는 기간으로 보셔야 합니다.
+    K-씨푸드 수출이 매년 역대 최대를 경신하는 상황(2025년 33.3억$)에서, 
+    이 기반이 갖춰지면 Year 2부터 반복 오더와 물량 확대가 기대됩니다.
+    범우물산이 이미 보유한 수산물 가공·수출 경험은 큰 자산입니다.
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-wrap">
+    <h3>다음 단계가 궁금하신가요?</h3>
+    <p>
+      범우물산의 취급 품목을 확인하고<br>
+      맞춤형 수출 전략을 30분 안에 정리해 드리겠습니다.<br>
+      편하신 일정을 알려주시면 찾아뵙겠습니다.
+    </p>
+    <a class="cta-btn" href="https://script.google.com/macros/s/AKfycbwXNBC7ARWlN2NdzxC-njZXp5PUBsPOuktH2B9FjGGGJni53w7dOxtO--pQboTVPXOyjQ/exec" target="_blank">📅 미팅 일정 예약하기</a>
+    <p style="font-size:0.75rem;color:rgba(255,255,255,0.35);margin-top:0.5rem;">Zoom 비대면 또는 대면 방문 선택 가능</p>
+    <div class="contact-info">
+      <strong>신대식 본부장</strong><br>
+      한국재무설계(주) KFP Export 사업부<br>
+      010-2088-5383 · kfpexport@kfpexport.com
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  © 2026 한국재무설계(주) KFP Export 사업부<br>
+  본 제안서는 (주)범우물산 김원찬 대표님께 제안드리는 맞춤 전략입니다.<br>
+  서울 강남구 테헤란로 98길 6-9, 7층 · 사업자등록번호 120-86-89360
+</footer>
+
+<!-- FLOATING CTA -->
+<div class="float-cta">
+  <span class="float-cta-text">수출 바이어를 찾아보시겠습니까?</span>
+  <a class="float-cta-btn" href="https://script.google.com/macros/s/AKfycbwXNBC7ARWlN2NdzxC-njZXp5PUBsPOuktH2B9FjGGGJni53w7dOxtO--pQboTVPXOyjQ/exec" target="_blank">📅 무료 상담 예약</a>
+  <a class="float-phone" href="tel:010-2088-5383">📞 010-2088-5383</a>
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
